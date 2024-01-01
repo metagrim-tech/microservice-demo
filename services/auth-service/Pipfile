@@ -1,0 +1,44 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "~=0.100"
+databases = "~=0.8.0"
+psycopg2-binary = "~=2.9.6"
+uvicorn = "~=0.23.2"
+pydantic = "~=2.1.1"
+pydantic_settings = "~=2.0.2"
+annotated-types = "~=0.5.0"
+python-multipart = "~=0.0.6"
+python-dotenv = "~=1.0.0"
+typing-extensions = "~=4.7.1"
+cryptography = "~=41.0.2"
+python-jose = "~=3.3.0"
+bcrypt = "~=4.0.1"
+passlib = "~=1.7.4"
+inject = "~=5.0.0"
+python-dateutil = "~=2.8.2"
+alembic = "~=1.11.1"
+redis = "~=4.6.0"
+SQLAlchemy = "~=1.4.50"
+
+[dev-packages]
+"pytest" = "6.2.5"
+"pytest-mock" = "3.7.0"
+"pytest-cov" = "3.0.0"
+"pytest-asyncio" = "0.18.0"
+"black" = "~=22.6.0"
+"flake8" = "~=6.1.0"
+"mypy" = "~=0.942"
+"pylint" = "~=2.13.0"
+"pycln" = "~=2.1.1"
+"pre-commit" = "~=2.17.0"
+"faker_sqlalchemy" = "~=0.10"
+"pytest-sqlalchemy-mock" = "~=0.1.5"
+"pytest-mock-resources[redis]" = "~=2.9.2"
+"Faker" = "~=19.13.0"
+
+[requires]
+python_version = "3.10"
