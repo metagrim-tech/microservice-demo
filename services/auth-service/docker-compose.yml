@@ -1,0 +1,72 @@
+version: '3.9'
+services:
+
+# Core services
+  demo-redis:
+    container_name: demo-redis
+    image: "redis:7.0.5-alpine"
+    command: redis-server --loglevel notice --requirepass redis
+    ports:
+      - "6380:6379"
+    expose:
+      - 6380
+    volumes:
+      - "./tmp-data/redis:/opt/redis/data"
+    profiles:
+      - core
+    networks:
+      - demo-service-network
+
+# API Service
+  demo-backend-postgres:
+    # Used by the Gateway Clipper Backend APIs
+    container_name: demo-backend-postgres
+    image: postgres:14.5-alpine
+    environment:
+      # set the auth method specifically otherwise authentication issues occur on a MAC
+      - POSTGRES_HOST_AUTH_METHOD=password
+      - POSTGRES_MULTIPLE_DATABASES=microservice_demo
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      # Mount the data to a local volume to ensure it persistent for local dev.
+      - ./tmp-data/demo-backend-postgres:/var/lib/postgresql/data
+      # Script used to initially create the database, runs automatically
+      - ./scripts/postgres:/docker-entrypoint-initdb.d
+    ports:
+      - "5490:5432"
+    profiles:
+      - api
+    networks:
+      - demo-service-network
+
+  demo-backend:
+    container_name: demo-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file: ".env_docker"
+    ports:
+      - "8064:8064"
+    volumes:
+      # Ensure the files in the src directory are mounted in the container each time
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+    expose:
+      - 8064
+    depends_on:
+      - demo-backend-postgres
+    # Run the entrypoint script rather than the microservice directly, as this
+    # provides us an opportunity to check whether the db is up to perform
+    # alembic migrations prior to starting the FastAPI microservice
+    command: "./entrypoint.sh demo-backend-postgres:5432"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles:
+      - api
+    networks:
+      - demo-service-network
+
+networks:
+  demo-service-network:
+    driver: bridge

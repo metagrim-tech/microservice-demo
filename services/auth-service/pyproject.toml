@@ -1,0 +1,59 @@
+# Pyproject TOML configuration file
+
+# Bandit settings
+# Doco: https://bandit.readthedocs.io/en/latest/config.html?highlight=pyproject.toml#scanning-behavior
+[tool.bandit]
+exclude_dirs = ["venv", ".venv", "gc-data"]
+
+# Black settings
+# Doco:  https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html
+[tool.black]
+line-length = 120
+exclude = "(venv|migrations)"
+
+# Mypy settings:
+# Doco: https://mypy.readthedocs.io/en/stable/config_file.html#the-mypy-configuration-file
+[tool.mypy]
+# Specifies the Python version used to parse and check the target program.
+python_version = "3.10"
+# Enables PEP 420 style namespace packages.
+namespace_packages = false
+disallow_untyped_defs = true
+ignore_missing_imports = true
+strict = true
+show_error_codes = true
+disallow_subclassing_any = false
+warn_unused_ignores = false
+exclude = ['venv', '.venv']
+
+
+[tool.flake8]
+ignore = ['E231', 'E241', 'F403']
+per-file-ignores = [
+    'constants.py:F403',
+]
+max-line-length = 120
+count = true
+
+
+# Pydocstyle settings
+# Doco: http://www.pydocstyle.org/en/stable/snippets/config.html
+[tool.pydocstyle]
+convention = "google"
+# Skip the following folders
+match_dir = '^(?!(venv)).*'
+
+# Isort settings
+# Doco: https://pycqa.github.io/isort/
+[tool.isort]
+# set the settings that are recommended with black
+profile = "black"
+multi_line_output = 3
+line_length = 120
+include_trailing_comma = true
+balanced_wrapping = true
+use_parentheses = true
+ensure_newline_before_comments = true
+# Skip the following folders
+skip = [".gitignore", ".dockerignore", "venv", ".venv"]
+known_third_party = ["fastapi", "pydantic", "starlette"]

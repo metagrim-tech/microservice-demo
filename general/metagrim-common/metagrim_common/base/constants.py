@@ -1,0 +1,7 @@
+# nopycln: file
+from starlette.status import *  # type: ignore
+
+UNDEFINED_ERROR_CODE = 520
+JWT_TOKEN_SIGNATURE_EXPIRED = 530
+JWT_TOKEN_SIGNATURE_INVALID = 531
+JWT_TOKEN_MISSING = 532
